@@ -1,0 +1,98 @@
+
+
+<html>
+  <head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+  </head>
+  <body>
+  <div id="configure" hide>
+	<h3>Please Configure this custom Extension</h3>
+	please select operation to perform on date range filter:<br>
+<input type="radio" id="minValR" name="opSelection" value="minValR" onChange="javascript:OpSelection('min');" checked>
+<label for="minValR">Minimum Date</label><br>
+<input type="radio" id="maxValR" name="opSelection" value="maxValR" onChange="javascript:OpSelection('max');">
+<label for="maxValR">Maximum Date</label><br>
+<input type="radio" id="bothR" name="opSelection" value="bothR" onChange="javascript:OpSelection('both');">
+<label for="bothR">Both</label>
+
+<br><br><br>please select operator:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<select id="oper" disabled>
+  <option value="add" selected>Add</option>
+  <option value="sub">Subtract</option>
+</select><br><div id="opsSelection1">
+# of days:&nbsp;&nbsp;&nbsp;&nbsp; <input type="number" name="dayR" id="dayR" /><br>
+</div>
+<div id="opsSelection2" style="display:none">
+# of days from today for minimum date:&nbsp;&nbsp;&nbsp;&nbsp; <input type="number" name="minR" id="minR" /><br>
+# of days from today for maximum date:&nbsp;&nbsp;&nbsp;&nbsp; <input type="number" name="maxR" id="maxR" /><br>
+</div>
+<button type="button" value="Submit" onClick="javascript:saveData()">Save</button>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+	<!-- Bootstrap -->
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+    <script src="/tableau.extensions.1.latest.js"></script>
+<script>
+
+function OpSelection(selVal)
+{
+var select1 = document.getElementById("oper");
+var onerow = document.getElementById("opsSelection1");
+var tworow = document.getElementById("opsSelection2");
+if(selVal == 'min')
+{
+select1.selectedIndex =0;
+onerow.style.display = "block";
+tworow.style.display = "none";
+}
+else if(selVal == 'max')
+{
+select1.selectedIndex =1;
+onerow.style.display = "block";
+tworow.style.display = "none";
+}
+else
+{
+select1.selectedIndex =1;
+onerow.style.display = "none";
+tworow.style.display = "block";
+}
+}
+
+function saveData()
+{
+	alert('save');
+	var selRadio = document.getElementsByName("opSelection");
+	var opr;
+	var maxDays;
+	var minDays;
+	if(selRadio[0].checked)
+	{
+		opr='min';
+		minDays=document.getElementById("dayR").value;
+	}
+	else if(selRadio[1].checked)
+	{
+		opr='max';
+		maxDays=document.getElementById("dayR").value;
+	}
+	else
+	{
+		opr='both';
+		maxDays=document.getElementById("maxR").value;
+		minDays=document.getElementById("minR").value;
+	}
+	alert(maxDays);alert(minDays);
+	//callTableauFilters(opr,minDays,maxDays);
+  tableau.extensions.settings.saveAsync().then((currentSettings) => {
+	      tableau.extensions.ui.closeDialog("10");
+	    });
+}
+
+
+
+</script>
+  </body>
+</html>
